@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Гость / Клиент" as Guest
+actor "Администратор отеля" as Manager
+actor "Платежная система" as PaymentSystem << System >>
+
+rectangle "Система бронирования отелей" {
+  usecase "UC-1: Поиск номеров" as UC1
+  usecase "UC-2: Бронирование номера" as UC2
+  usecase "UC-3: Оплата бронирования" as UC3
+  usecase "UC-4: Авторизация" as UC4
+  usecase "UC-5: Применение промокода" as UC5
+  usecase "UC-6: Управление номерами" as UC6
+  usecase "UC-7: Отмена бронирования" as UC7
+}
+
+Guest --> UC1
+Guest --> UC2
+Guest --> UC7
+
+Manager --> UC6
+Manager --> UC7
+
+UC2 .> UC4 : <<include>>
+UC2 .> UC3 : <<include>>
+UC3 .> UC5 : <<extend>>
+
+UC3 --> PaymentSystem
+@enduml

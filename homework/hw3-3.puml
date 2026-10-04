@@ -1,0 +1,32 @@
+@startuml
+autonumber
+actor Guest as "Гость"
+participant ":BookingController" as Controller
+participant ":RoomService" as RoomSvc
+participant ":PaymentGateway" as Payment
+participant ":NotificationService" as NotifSvc
+
+Guest -> Controller: createBooking(roomId, dates, paymentDetails)
+activate Controller
+
+  Controller -> RoomSvc: checkAvailability(roomId, dates)
+  activate RoomSvc
+  RoomSvc --> Controller: isAvailable = true
+  deactivate RoomSvc
+
+  Controller -> Payment: processPayment(amount, cardInfo)
+  activate Payment
+  Payment --> Controller: paymentStatus = SUCCESS
+  deactivate Payment
+
+  Controller -> RoomSvc: lockRoom(roomId, dates)
+  activate RoomSvc
+  RoomSvc --> Controller: locked = true
+  deactivate RoomSvc
+
+  Controller ->> NotifSvc: sendConfirmationEmail(guestEmail, bookingDetails)
+
+  Controller --> Guest: BookingConfirmedResponse(bookingId, status)
+deactivate Controller
+
+@enduml

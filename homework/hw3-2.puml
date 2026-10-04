@@ -1,0 +1,52 @@
+@startuml
+abstract class User {
+  # id: String
+  # name: String
+  # email: String
+  # phone: String
+  + login(): Boolean
+  + logout(): Void
+}
+
+class Guest {
+  - passportData: String
+  - bonusPoints: Int
+  + searchRooms(criteria: SearchCriteria): List<Room>
+  + createBooking(roomId: String, dates: DateRange): Booking
+}
+
+class Booking {
+  - bookingId: String
+  - checkInDate: Date
+  - checkOutDate: Date
+  - totalPrice: Decimal
+  - status: BookingStatus
+  + confirmBooking(): Boolean
+  + cancelBooking(): Boolean
+  + calculateTotal(): Decimal
+}
+
+class Room {
+  - roomId: String
+  - roomNumber: String
+  - category: String
+  - pricePerNight: Decimal
+  - isAvailable: Boolean
+  + markAsBooked(): Void
+  + markAsFree(): Void
+}
+
+class Hotel {
+  - hotelId: String
+  - title: String
+  - address: String
+  - rating: Float
+  + addRoom(room: Room): Void
+  + getAvailableRooms(): List<Room>
+}
+
+User <|-- Guest
+Guest "1" -- "0..*" Booking
+Booking "0..*" o-- "1" Room
+Hotel "1" *-- "1..*" Room
+@enduml
