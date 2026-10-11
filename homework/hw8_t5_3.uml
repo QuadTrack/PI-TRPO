@@ -1,0 +1,51 @@
+@startuml
+left to right direction
+
+class SimpleText {
+    + SimpleText: string
+    + render(): void
+}
+
+interface Text {
+    + render(): void
+}
+
+abstract class TextDecorator {
+    - text: string
+    - decorators: array
+    + render(): void
+}
+
+class BoldDecorator {
+    - text: string
+    + render(): void
+}
+class ItalicDecorator {
+    - text: string
+    + render(): void
+}
+class UnderLineDecorator {
+    - text: string
+    + render(): void
+}
+class StrikeThroughDecorator {
+    - text: string
+    + render(): void
+}
+
+Text <|-- SimpleText
+Text <|-- TextDecorator
+SimpleText -[hidden]r- TextDecorator
+
+TextDecorator o--> SimpleText : inherites text to render
+
+BoldDecorator --|> TextDecorator          : realizes
+ItalicDecorator --|> TextDecorator        : realizes
+UnderLineDecorator --|> TextDecorator     : realizes
+StrikeThroughDecorator --|> TextDecorator : realizes
+
+BoldDecorator -[hidden]r- ItalicDecorator
+ItalicDecorator -[hidden]r- UnderLineDecorator
+UnderLineDecorator -[hidden]r- StrikeThroughDecorator
+
+@enduml

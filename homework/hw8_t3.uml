@@ -1,0 +1,40 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface Notifier {
+    + send(message: String): void
+    + sendMethod(methods: Array)
+}
+
+class BasicNotifier {
+    + send(message: String): void
+}
+
+abstract class BaseDecorator {
+    - wrapper: Notifier
+    + send(message: String): void
+}
+
+class EmailNotifier {
+    + send(message: String): void
+    - _send_email(message: String): void
+}
+
+class SMSNotifier {
+    + send(message: String): void
+    - _send_sms(message: String): void
+}
+
+class SlackNotifier {
+    + send(message: String): void
+    - _send_slack(message: String): void
+}
+
+Notifier <|.. BasicNotifier
+Notifier ..|> BaseDecorator : methodSelect
+BaseDecorator o--> Notifier : wrapper
+BaseDecorator <|-- EmailNotifier
+BaseDecorator <|-- SMSNotifier
+BaseDecorator <|-- SlackNotifier
+
+@enduml

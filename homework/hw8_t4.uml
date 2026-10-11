@@ -1,0 +1,39 @@
+@startuml
+
+class Product {
+    - name (String)
+    - price (Float32)
+    - attachedObserver (Observer)
+    + Create(name: string): void
+    + SetPrice(price: float32): void
+    + Update(Product_price: float32): void
+}
+
+interface Observer { 
+    <<interface>>
+    + Send_Alert (String): void
+}
+
+
+class EmailAlert {
+    - send_email(message: String): void
+    + Send_Alert (String): void
+}
+
+class SMSAlert {
+    - send_sms(message: String): void
+    + Send_Alert (String): void
+}
+
+class Logger {
+    + Send_Alert (String): void
+    - Write_Logs (message: String, dateTime: time): void
+}
+
+
+Observer <|-- EmailAlert : realizes
+Observer <|-- SMSAlert : realizes
+Observer <|-- Logger : realizes
+Product --> Observer : notifies
+
+@enduml
