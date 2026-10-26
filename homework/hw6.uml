@@ -1,0 +1,54 @@
+@startuml
+left to right direction
+
+:Librarian: as Lb
+:Administrator: as Ad
+
+rectangle "Book Management" {
+    usecase "Search for book" as uc1
+    usecase "Use filters" as auc3
+    uc1 .> auc3 : include
+
+    usecase "Book a book" as uc2
+    usecase "Check book availability" as auc7
+    usecase "Check booking limit" as auc2
+    uc2 .> auc7 : include
+    uc2 .> auc2 : include
+
+    usecase "Extend booking" as uc3
+    usecase "Check booking" as auc1
+}
+
+rectangle "Account Management" {
+    usecase "Manage accounts" as uc5
+    usecase "Manage account" as auc6
+    usecase "Delete account" as auc5_del
+    usecase "Create account" as auc4
+
+    uc5 .> auc6 : extends
+    uc5 .> auc5_del : extends
+    uc5 .> auc4 : extends
+}
+
+rectangle "Catalog & Reports" {
+    usecase "Add a book" as uc4
+    usecase "Censor a book" as uc6
+    usecase "Reports" as uc7
+}
+
+:Reader: as Rd
+
+Rd --> uc1
+Rd --> uc2
+Rd --> uc3
+Rd --> auc1
+
+Lb --> uc4
+Lb --> uc6
+Lb --> uc7
+
+Ad --> uc5
+Ad --> uc7
+
+
+@enduml
